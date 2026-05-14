@@ -5,13 +5,32 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Mobile Menu Toggle ---
   const menuToggle = document.getElementById('menuToggle');
   const nav = document.getElementById('nav');
+  const navOverlay = document.getElementById('navOverlay');
+
+  function toggleMenu(open) {
+    const isOpen = open !== undefined ? open : !nav.classList.contains('open');
+    nav.classList.toggle('open', isOpen);
+    menuToggle.classList.toggle('open', isOpen);
+    if (navOverlay) navOverlay.classList.toggle('show', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
   if (menuToggle && nav) {
-    menuToggle.addEventListener('click', () => {
-      nav.classList.toggle('open');
-    });
+    menuToggle.addEventListener('click', () => toggleMenu());
+
     // Close menu on link click
     nav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => nav.classList.remove('open'));
+      link.addEventListener('click', () => toggleMenu(false));
+    });
+
+    // Close menu on overlay click
+    if (navOverlay) {
+      navOverlay.addEventListener('click', () => toggleMenu(false));
+    }
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') toggleMenu(false);
     });
   }
 

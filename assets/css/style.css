@@ -182,11 +182,45 @@ h1, h2, h3, h4 {
   display: none;
   background: none;
   border: none;
-  font-size: 1.5rem;
   cursor: pointer;
   padding: 8px;
   color: var(--stone-600);
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s;
 }
+.menu-toggle:hover { background: var(--green-100); }
+.menu-bar {
+  display: block;
+  width: 22px;
+  height: 2.5px;
+  background: var(--stone-600);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.menu-toggle.open .menu-bar:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.menu-toggle.open .menu-bar:nth-child(2) { opacity: 0; }
+.menu-toggle.open .menu-bar:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* Mobile nav overlay */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 98;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.nav-overlay.show { opacity: 1; }
 
 /* --- Hero / Banner --- */
 .hero {
@@ -720,56 +754,199 @@ tbody tr:last-child td:last-child { border-radius: 0 0 var(--radius-sm) 0; }
   transform: translateY(-2px);
 }
 
-/* --- Responsive --- */
+/* ============================================
+   Responsive - Mobile First 优化
+   ============================================ */
+
+/* --- 平板 (≤768px) --- */
 @media (max-width: 768px) {
-  .ad-slot[data-ad-slot="home-banner"] iframe,
-  .ad-slot[data-ad-slot="content-top"] iframe,
-  .ad-slot[data-ad-slot="content-bottom"] iframe {
-    max-width: 100% !important;
-    height: auto !important;
-  }
-  .hero h1 { font-size: 1.8rem; }
-  .hero p { font-size: 0.95rem; }
+  body { font-size: 0.95rem; }
+
+  /* ===== 导航 ===== */
+  .menu-toggle { display: flex; }
+
+  .nav-overlay { display: block; }
+  .nav-overlay.show { display: block; }
 
   .nav {
     position: fixed;
     top: var(--header-height);
     left: 0;
     right: 0;
-    background: white;
+    bottom: 0;
+    background: rgba(255,255,255,0.98);
+    backdrop-filter: blur(12px);
     flex-direction: column;
-    padding: 12px;
-    border-bottom: 2px solid var(--green-100);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-120%);
-    transition: transform 0.3s;
+    padding: 16px 20px;
+    border-top: 2px solid var(--green-100);
+    box-shadow: var(--shadow-xl);
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 99;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
-  .nav.open { transform: translateY(0); }
-  .nav a { width: 100%; padding: 12px 16px; }
+  .nav.open { transform: translateX(0); }
 
-  .menu-toggle { display: block; }
+  .nav a {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1rem;
+    border-radius: var(--radius);
+    border-bottom: 1px solid var(--stone-100);
+  }
+  .nav a:last-child { border-bottom: none; }
+  .nav a.active { background: var(--green-100); color: var(--green-700); font-weight: 700; }
 
-  .content-body { padding: 24px 18px; }
+  /* ===== Hero ===== */
+  .hero { padding: 40px 0 36px; }
+  .hero::before {
+    width: 300px;
+    height: 300px;
+    top: -30%;
+    right: -30%;
+  }
+  .hero::after { display: none; }
+  .hero h1 { font-size: 1.6rem; }
+  .hero p { font-size: 0.92rem; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .hero-actions .btn { width: 100%; max-width: 280px; justify-content: center; }
 
-  .page-header { padding: 24px 0; }
-  .page-header h1 { font-size: 1.5rem; }
+  /* ===== 页面头部 ===== */
+  .page-header { padding: 20px 0; }
+  .page-header h1 { font-size: 1.4rem; }
+  .page-header p { font-size: 0.88rem; }
 
-  .crop-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  /* ===== 内容 ===== */
+  .content-body { padding: 20px 16px; border-radius: var(--radius); }
+  .content-body h2 { font-size: 1.2rem; }
+  .content-body h3 { font-size: 1.05rem; }
+
+  /* ===== 网格布局 ===== */
+  .crop-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .guide-grid { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
 
+  /* ===== 卡片 ===== */
+  .crop-card { padding: 14px 10px; }
+  .crop-card .crop-emoji { font-size: 2.2rem; }
+  .crop-card .crop-stats { font-size: 0.72rem; }
+
+  .feature-card { padding: 18px 14px; }
+  .feature-icon { width: 44px; height: 44px; font-size: 1.2rem; }
+
+  .guide-card { padding: 20px 16px; }
+
+  /* ===== 表格 ===== */
+  .table-wrap {
+    margin: 12px -16px;
+    width: calc(100% + 32px);
+    border-radius: 0;
+  }
+  .table-wrap table { font-size: 0.82rem; }
+  .table-wrap thead th,
+  .table-wrap tbody td { padding: 8px 10px; }
+
+  /* ===== 组件 ===== */
   .compare-box { grid-template-columns: 1fr; }
+  .section-title { font-size: 1.3rem; }
+  .section-subtitle { font-size: 0.88rem; margin-bottom: 24px; }
 
-  .section-title { font-size: 1.4rem; }
+  .step { padding: 14px 16px 14px 44px; }
+  .step::before { width: 24px; height: 24px; font-size: 0.75rem; top: 14px; left: 12px; }
 
-  .features-grid { grid-template-columns: 1fr 1fr; }
+  .info-box { padding: 12px 14px; font-size: 0.9rem; }
+
+  /* ===== 广告 ===== */
+  .ad-slot[data-ad-slot="home-banner"],
+  .ad-slot[data-ad-slot="content-top"],
+  .ad-slot[data-ad-slot="content-bottom"] {
+    overflow: hidden;
+  }
+  .ad-slot[data-ad-slot="home-banner"] > *,
+  .ad-slot[data-ad-slot="content-top"] > *,
+  .ad-slot[data-ad-slot="content-bottom"] > * {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* ===== 新闻列表 ===== */
+  .news-list li { flex-direction: column; gap: 4px; }
+  .news-date { min-width: auto; }
+
+  /* ===== 步骤/其他 ===== */
+  .btn { padding: 12px 22px; font-size: 0.9rem; }
+  .section { padding: 36px 0; }
+
+  .back-top {
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
 }
 
+/* --- 手机横屏 (≤640px) --- */
+@media (max-width: 640px) {
+  .crop-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .features-grid { gap: 10px; }
+  .crop-card .crop-stats { grid-template-columns: 1fr 1fr; }
+}
+
+/* --- 小屏手机 (≤480px) --- */
 @media (max-width: 480px) {
+  .hero { padding: 32px 0 28px; }
+  .hero h1 { font-size: 1.4rem; }
+  .hero p { font-size: 0.88rem; }
+
   .features-grid { grid-template-columns: 1fr; }
-  .crop-grid { grid-template-columns: 1fr 1fr; }
-  .hero { padding: 40px 0 30px; }
-  .btn { padding: 10px 20px; font-size: 0.88rem; }
+
+  .crop-grid { grid-template-columns: repeat(2, 1fr); }
+  .crop-card .crop-stats { font-size: 0.68rem; }
+  .crop-card .crop-stats span { padding: 2px 4px; }
+
+  .page-header h1 { font-size: 1.25rem; }
+
+  .content-body { padding: 16px 12px; }
+  .content-body h2 { font-size: 1.1rem; }
+  .table-wrap { margin: 10px -12px; width: calc(100% + 24px); }
+
+  .btn { padding: 10px 18px; font-size: 0.85rem; }
+
+  .header .logo { font-size: 1.1rem; }
+  .logo-icon { width: 30px; height: 30px; font-size: 1rem; }
+
+  .back-top { bottom: 14px; right: 14px; width: 36px; height: 36px; font-size: 0.9rem; }
+}
+
+/* --- 超小屏 (≤360px) --- */
+@media (max-width: 360px) {
+  .container { padding: 0 12px; }
+  .content-body { padding: 12px 10px; }
+  .crop-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .crop-card { padding: 10px 8px; }
+  .crop-card .crop-emoji { font-size: 1.8rem; }
+  .hero h1 { font-size: 1.25rem; }
+  .hero-actions .btn { font-size: 0.82rem; padding: 10px 14px; }
+  .table-wrap table { font-size: 0.75rem; }
+  .table-wrap thead th,
+  .table-wrap tbody td { padding: 6px 6px; }
+}
+
+/* --- 手机横屏检测优化 (landscape) --- */
+@media (max-height: 480px) and (orientation: landscape) {
+  .hero { padding: 24px 0 20px; }
+  .hero h1 { font-size: 1.3rem; }
+  .hero p { font-size: 0.85rem; margin-bottom: 16px; }
+  .hero-actions { flex-direction: row; }
+  .hero-actions .btn { width: auto; max-width: none; }
+  .features-grid { grid-template-columns: repeat(4, 1fr); }
+  .nav { padding: 8px 16px; }
+  .nav a { padding: 10px 14px; font-size: 0.9rem; }
+  .section { padding: 24px 0; }
+  .page-header { padding: 16px 0; }
+  .page-content { padding: 24px 0 30px; }
 }
 
 /* --- Animations --- */
