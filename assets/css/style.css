@@ -679,6 +679,17 @@ tbody tr:last-child td:last-child { border-radius: 0 0 var(--radius-sm) 0; }
 }
 .footer a { color: var(--green-600); }
 
+/* --- Ad Slots --- */
+.ad-slot {
+  display: none;
+  overflow: hidden;
+}
+.ad-slot iframe,
+.ad-slot ins {
+  display: block !important;
+  margin: 0 auto !important;
+}
+
 /* --- Back to Top --- */
 .back-top {
   position: fixed;
@@ -711,6 +722,12 @@ tbody tr:last-child td:last-child { border-radius: 0 0 var(--radius-sm) 0; }
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
+  .ad-slot[data-ad-slot="home-banner"] iframe,
+  .ad-slot[data-ad-slot="content-top"] iframe,
+  .ad-slot[data-ad-slot="content-bottom"] iframe {
+    max-width: 100% !important;
+    height: auto !important;
+  }
   .hero h1 { font-size: 1.8rem; }
   .hero p { font-size: 0.95rem; }
 
