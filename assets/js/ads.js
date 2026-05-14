@@ -1,105 +1,144 @@
 /**
  * 王者农场攻略站 - 广告管理脚本
  *
- * 使用说明：
- * 1. 在 adnetworks 中配置你的广告网络代码
- * 2. 在页面 HTML 中添加 <div class="ad-slot" data-ad-slot="slot-name"></div>
- * 3. 广告会自动渲染到对应的广告位
+ * 当前使用：Google AdSense
  *
- * 切换广告网络：修改 defaultNetwork 的值
+ * 接入步骤：
+ * 1. 去 https://adsense.google.com 申请账号
+ * 2. 申请通过后把 e79d36aac4a51f8d1b3c6547d64c2426 替换为你的发布商ID
+ * 3. 在 AdSense 后台创建广告单元，获取 data-ad-slot 值
+ * 4. 填入下方 AD_UNITS 配置中
  */
 
 const AD_CONFIG = {
-  // 当前使用的广告网络: 'adsense' | 'baidu' | 'custom'
-  defaultNetwork: 'custom',
+  // ===== 修改这里 =====
+  publisherId: 'ca-pub-xxxxxxxxxxxxxx', // 替换为你的发布商ID（格式: ca-pub-xxxxxxxxxxxxxx）
+  // ===================
 
-  // 广告网络配置
-  networks: {
-    // Google AdSense
-    adsense: {
-      publisherId: 'ca-pub-xxxxxxxxxxxxxx', // 替换为你的发布商ID
-      script: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
-    },
-
-    // 百度联盟
-    baidu: {
-      publisherId: '', // 替换为你的百度联盟ID
-    },
-
-    // 自定义广告代码（用于任何广告网络）
-    custom: {
-      // 每个广告位的自定义代码
-      slots: {
-        'home-banner': '',
-        'home-cards-mid': '',
-        'content-top': '',
-        'content-mid': '',
-        'content-bottom': '',
-        'sidebar': '',
-      },
-    },
+  // 广告单元配置（在 AdSense 后台创建广告单元后，把 data-ad-slot 填进来）
+  adUnits: {
+    // 广告位名称: { slotId: 'AdSense的data-ad-slot值', format: 'auto'/'fixed' }
+    'home-banner':    { slotId: '', format: 'horizontal' },
+    'home-cards-mid': { slotId: '', format: 'rectangle' },
+    'content-top':    { slotId: '', format: 'horizontal' },
+    'content-mid':    { slotId: '', format: 'rectangle' },
+    'content-bottom': { slotId: '', format: 'horizontal' },
   },
+
+  // 当前状态（无需修改）
+  ready: false,
 }
 
 /**
- * 广告位尺寸配置（用于占位显示）
+ * 广告位尺寸配置（占位提示用）
  */
 const AD_SLOT_SIZES = {
-  'home-banner': { width: '728px', height: '90px', label: '横幅广告(728×90)' },
-  'home-cards-mid': { width: '336px', height: '280px', label: '中矩形广告(336×280)' },
-  'content-top': { width: '728px', height: '90px', label: '横幅广告(728×90)' },
-  'content-mid': { width: '336px', height: '280px', label: '中矩形广告(336×280)' },
-  'content-bottom': { width: '728px', height: '90px', label: '横幅广告(728×90)' },
-  'sidebar': { width: '300px', height: '250px', label: '矩形广告(300×250)' },
+  'home-banner':    { label: '横幅广告 728×90', style: 'min-height:90px;max-width:728px' },
+  'home-cards-mid': { label: '中矩形广告 336×280', style: 'min-height:280px;max-width:336px' },
+  'content-top':    { label: '横幅广告 728×90', style: 'min-height:90px;max-width:728px' },
+  'content-mid':    { label: '中矩形广告 336×280', style: 'min-height:280px;max-width:336px' },
+  'content-bottom': { label: '横幅广告 728×90', style: 'min-height:90px;max-width:728px' },
 }
 
 /**
- * 初始化所有广告位
+ * 初始化广告
  */
-function initAds() {
+document.addEventListener('DOMContentLoaded', () => {
+  // 检查是否有广告位
   const slots = document.querySelectorAll('[data-ad-slot]')
-  slots.forEach(el => {
-    const slotName = el.dataset.adSlot
-    renderAd(el, slotName)
-  })
+  if (!slots.length) return
+
+  const pid = AD_CONFIG.publisherId
+  const isReady = pid && pid !== 'ca-pub-xxxxxxxxxxxxxx'
+
+  if (isReady) {
+    // 加载 AdSense 脚本（每个页面只加载一次）
+    AD_CONFIG.ready = true
+    loadAdSenseScript(pid)
+  }
+
+  // 渲染所有广告位
+  slots.forEach(el => renderAd(el, isReady))
+})
+
+/**
+ * 加载 AdSense 脚本
+ */
+function loadAdSenseScript(publisherId) {
+  // 防止重复加载
+  if (document.querySelector('script[src*="adsbygoogle"]')) return
+
+  const script = document.createElement('script')
+  script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${publisherId}`
+  script.async = true
+  script.crossOrigin = 'anonymous'
+  document.head.appendChild(script)
 }
 
 /**
  * 渲染单个广告位
  */
-function renderAd(container, slotName) {
-  const network = AD_CONFIG.defaultNetwork
-  const size = AD_SLOT_SIZES[slotName]
+function renderAd(container, isReady) {
+  const name = container.dataset.adSlot
+  const size = AD_SLOT_SIZES[name]
 
-  if (!size) return
+  if (!size) {
+    container.style.display = 'none'
+    return
+  }
 
-  // 如果已配置该广告位的代码，优先使用
-  const customCode = AD_CONFIG.networks.custom?.slots?.[slotName]
-  if (network === 'custom' && customCode) {
-    container.innerHTML = customCode
+  if (!isReady) {
+    // 未配置发布商ID → 显示占位提示
+    container.innerHTML = `
+      <div style="
+        display:flex;align-items:center;justify-content:center;flex-direction:column;
+        ${size.style};width:100%;margin:0 auto;
+        background:#f0fdf4;border:2px dashed #bbf7d0;border-radius:12px;
+        color:#86efac;font-size:0.85rem;text-align:center;padding:20px;
+      ">
+        <div>📢 ${size.label}</div>
+        <div style="font-size:0.75rem;color:#a8a29e;margin-top:4px;">
+          在 assets/js/ads.js 中填入 AdSense 发布商ID后自动展示广告
+        </div>
+      </div>
+    `
     container.style.display = 'block'
     return
   }
 
-  // 否则显示占位提示
-  container.innerHTML = `
-    <div style="
-      display:flex; align-items:center; justify-content:center;
-      width:100%; min-height:${size.height}; max-width:${size.width};
-      margin:0 auto; background:#f0fdf4; border:2px dashed #bbf7d0;
-      border-radius:12px; color:#86efac; font-size:0.85rem; text-align:center;
-      padding:16px; cursor:pointer; transition:all 0.3s;
-    "
-    onclick="this.style.display='none'"
-    title="点击关闭占位">
-      📢 广告位 · ${size.label}<br>
-      <span style="font-size:0.75rem;color:#a8a29e;margin-top:4px;">
-        在 assets/js/ads.js 中配置广告代码后自动替换
-      </span>
-    </div>
-  `
-  container.style.display = 'block'
-}
+  // 渲染 AdSense 广告
+  const unit = AD_CONFIG.adUnits[name]
+  if (!unit) return
 
-// DOM 加载完成后初始化广告
-document.addEventListener('DOMContentLoaded', initAds)
+  const ins = document.createElement('ins')
+  ins.className = 'adsbygoogle'
+  ins.style.display = 'block'
+  ins.dataset.adClient = AD_CONFIG.publisherId
+
+  if (unit.slotId) {
+    ins.dataset.adSlot = unit.slotId
+  }
+
+  if (unit.format === 'horizontal') {
+    ins.dataset.adFormat = 'horizontal'
+    ins.style.width = '728px'
+    ins.style.height = '90px'
+  } else if (unit.format === 'rectangle') {
+    ins.dataset.adFormat = 'rectangle'
+    ins.style.width = '336px'
+    ins.style.height = '280px'
+  } else {
+    ins.dataset.adFormat = 'auto'
+    ins.style.width = '100%'
+  }
+
+  container.innerHTML = ''
+  container.appendChild(ins)
+  container.style.display = 'block'
+
+  try {
+    ;(adsbygoogle = window.adsbygoogle || []).push({})
+  } catch (e) {
+    // AdSense 尚未加载完成
+  }
+}
