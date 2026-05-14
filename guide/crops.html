@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作物图鉴 - 王者农场攻略站</title>
+  <meta name="description" content="王者农场全作物图鉴，含种植时间、经验收益、金币售价、等级要求、最优种植策略。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <a href="/" class="logo"><span class="logo-icon">🌾</span>王者农场攻略</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单">☰</button>
+      <nav class="nav" id="nav">
+        <a href="/">首页</a>
+        <a href="/guide/basics.html">基础入门</a>
+        <a href="/guide/crops.html" class="active">作物图鉴</a>
+        <a href="/guide/leveling.html">升级攻略</a>
+        <a href="/guide/heroes.html">英雄作物</a>
+        <a href="/guide/giant.html">巨大化</a>
+        <a href="/guide/social.html">社交系统</a>
+        <a href="/guide/faq.html">常见问题</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">首页</a> <span>/</span> <span>作物图鉴</span>
+      </div>
+      <div class="page-header">
+        <h1>🌽 作物图鉴</h1>
+        <p>全作物数据一览 · 种植最优解分析 · 收益最大化指南</p>
+      </div>
+
+      <div class="content-body">
+        <div class="info-box warn">
+          <strong>⚠️ 数据说明</strong>
+          <p>作物数据基于玩家社区整理，具体数值可能随版本更新调整。如发现数据有误，欢迎提交修正。</p>
+        </div>
+
+        <h2>全作物数据表</h2>
+        <p>以下为当前版本已知的作物数据（按等级要求排序）：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>作物</th>
+                <th>解锁等级</th>
+                <th>种植时间</th>
+                <th>经验收益</th>
+                <th>金币售价</th>
+                <th>特点</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>🥬 白菜</td>
+                <td>1级</td>
+                <td>5分钟</td>
+                <td>低</td>
+                <td>低</td>
+                <td><span class="tag tag-green">新手</span></td>
+              </tr>
+              <tr>
+                <td>🥕 胡萝卜</td>
+                <td>5级</td>
+                <td>15分钟</td>
+                <td>低</td>
+                <td>低</td>
+                <td><span class="tag tag-green">新手</span></td>
+              </tr>
+              <tr>
+                <td>🍓 草莓</td>
+                <td>10级</td>
+                <td>30分钟</td>
+                <td>中</td>
+                <td>中</td>
+                <td>前期过渡</td>
+              </tr>
+              <tr>
+                <td>🍌 香蕉</td>
+                <td>20级</td>
+                <td>1小时</td>
+                <td>中</td>
+                <td>中高</td>
+                <td>性价比较高</td>
+              </tr>
+              <tr>
+                <td>🍊 柚子</td>
+                <td>25级</td>
+                <td>1.5小时</td>
+                <td>中</td>
+                <td>中</td>
+                <td>香蕉优于柚子</td>
+              </tr>
+              <tr>
+                <td>🍉 西瓜</td>
+                <td>30级</td>
+                <td>2小时</td>
+                <td>中高</td>
+                <td>中高</td>
+                <td>中期主力</td>
+              </tr>
+              <tr>
+                <td>🍈 木瓜</td>
+                <td>40级</td>
+                <td>3小时</td>
+                <td>高</td>
+                <td>高</td>
+                <td>跳过还是种植？争议作物</td>
+              </tr>
+              <tr>
+                <td>🍊 橘子</td>
+                <td>45级</td>
+                <td>4小时</td>
+                <td>高</td>
+                <td>高</td>
+                <td>跳过木瓜可选</td>
+              </tr>
+              <tr>
+                <td>⭐ 杨桃</td>
+                <td>50级</td>
+                <td>6小时</td>
+                <td>很高</td>
+                <td>很高</td>
+                <td>高级作物标杆</td>
+              </tr>
+              <tr>
+                <td>🫐 蓝莓</td>
+                <td>48级</td>
+                <td>2小时</td>
+                <td>中</td>
+                <td>中</td>
+                <td>巨大化首选</td>
+              </tr>
+              <tr>
+                <td>🌾 金币作物</td>
+                <td>各等级</td>
+                <td>不等</td>
+                <td>低</td>
+                <td>极高</td>
+                <td>专门赚金币</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>作物收益评估</h2>
+
+        <h3>经验效率排行（单位时间经验）</h3>
+        <ol>
+          <li><strong>白菜/胡萝卜</strong> — 短时间高频种植，适合在线活跃玩家</li>
+          <li><strong>香蕉</strong> — 性价比之王，经验/时间比优秀</li>
+          <li><strong>西瓜</strong> — 中期最优选择，适合挂机</li>
+          <li><strong>杨桃</strong> — 高级作物，单次经验最高但时间也长</li>
+        </ol>
+
+        <h3>金币效率排行</h3>
+        <ol>
+          <li><strong>金币作物</strong> — 专门为金币而生的作物</li>
+          <li><strong>杨桃</strong> — 高级作物中售价最高</li>
+          <li><strong>橘子</strong> — 中后期好选择</li>
+        </ol>
+
+        <div class="info-box tip">
+          <strong>🌱 核心建议</strong>
+          <p><strong>香蕉比柚子值钱</strong>：多个UP主实测证明，香蕉的收益全面优于柚子，建议跳过柚子直接种香蕉。<br>
+          <strong>跳木瓜种橘子</strong>：40-45级区间，跳过木瓜直接种橘子是否可行？实测显示可行但需要评估培育等级。<br>
+          <strong>培育等级影响售价</strong>：千万别在农作物培育度等级低的时候卖掉高级作物，培育等级没拉满，高级作物反而亏钱。</p>
+        </div>
+
+        <h2>培育等级机制</h2>
+        <p>每种作物都有自己的培育等级（熟练度），通过重复种植同一种作物来提升。培育等级越高，该作物的售价越高。</p>
+        <ul>
+          <li>培育等级未拉满时，高级作物的收益可能不如低级作物</li>
+          <li>建议集中培养2-3种主力作物，不要分散种植</li>
+          <li>培育等级与农场等级是两个不同的系统</li>
+        </ul>
+
+        <div class="info-box alert">
+          <strong>⚠️ 常见误区</strong>
+          <p>很多新手解锁高级作物后立即改种最高级作物，但因为培育等级低，实际收益反而低于种熟的初级作物。建议先看培育等级再决定！</p>
+        </div>
+
+        <h2>种植策略选择</h2>
+        <div class="compare-box">
+          <div class="compare-item good">
+            <h4>✅ 冲等级路线</h4>
+            <ul>
+              <li>优先选种植时间短、经验/时间高的作物</li>
+              <li>白菜/胡萝卜 → 香蕉 → 西瓜</li>
+              <li>适合需要快速升级开图鉴</li>
+            </ul>
+          </div>
+          <div class="compare-item">
+            <h4>💎 赚金币路线</h4>
+            <ul>
+              <li>优先选金币售价高的作物</li>
+              <li>金币作物 → 杨桃 → 橘子</li>
+              <li>适合需要金币买种子升级</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p>王者农场攻略站 · 数据来源于玩家社区整理</p>
+      <p style="margin-top:4px;"><a href="https://github.com/yintao0303/wz-farm-guide" target="_blank">GitHub 仓库</a></p>
+    </div>
+  </footer>
+
+  <button class="back-top" id="backTop">↑</button>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://wz-farm-guide.pages.dev/sitemap.xml
