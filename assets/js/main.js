@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     nav.classList.toggle('open', isOpen);
     menuToggle.classList.toggle('open', isOpen);
     if (navOverlay) navOverlay.classList.toggle('show', isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
   }
 
   if (menuToggle && nav) {
