@@ -12,7 +12,7 @@
 
 const AD_CONFIG = {
   // ===== 修改这里 =====
-  publisherId: 'ca-pub-xxxxxxxxxxxxxx', // 替换为你的发布商ID（格式: ca-pub-xxxxxxxxxxxxxx）
+  publisherId: 'ca-pub-1284373225381842',
   // ===================
 
   // 广告单元配置（在 AdSense 后台创建广告单元后，把 data-ad-slot 填进来）
